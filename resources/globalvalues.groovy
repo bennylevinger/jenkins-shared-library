@@ -1,3 +1,3 @@
 //Global Params
-dockerRegistry=bennylevinger/devopsadv
+dockerRegistry=bennylevinger
 helmRepository=http://v-nugetsrv3.inr.rd.hpicorp.net:8624/helm/charts/
