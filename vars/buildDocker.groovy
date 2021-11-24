@@ -8,7 +8,7 @@ def call(String tag,String workspace, String push , String Dockerfile) {
   sh """
     cd ${workspace}
     echo building image ${tag}
-    ${SUDOVAR} docker build -t ${dockerRegistry}/${tag} -f ${Dockerfile} .
+    docker build -t ${dockerRegistry}/${tag} -f ${Dockerfile} .
   """
   if ("${push}" == 'true'){
     echo "${push} comes to shove"
