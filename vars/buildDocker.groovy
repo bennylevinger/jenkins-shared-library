@@ -12,6 +12,7 @@ def call(String tag,String folder, String push , String Dockerfile) {
   """
   if ("${push}" == 'true'){
     echo "${push} comes to shove"
+	sh "echo ${DOCKERHUB_CREDENTIALS_PWD} | docker login -u DOCKERHUB_CREDENTIALS_USR} --password-stdin"
     sh " docker push ${dockerRegistry}/${tag}"
   }
 
