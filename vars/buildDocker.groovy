@@ -1,28 +1,18 @@
 #!/usr/bin/env groovy
 
-def call(String tag,String registry,String workspace, String push , String Dockerfile) {
- if (env.OS == null)
- {
-    echo "OS is ${env.OS}"
-    SUDOVAR = 'printf "ubuntu\\n" | sudo -S'
- } else
- {
-     echo "OS is ${env.OS}"
-	 if (env.OS.toLowerCase().contains('windows')) {
-		SUDOVAR = ""
-	  } else {
-		SUDOVAR = 'printf "ubuntu\\n" | sudo -S'
-	  } 
- }
+def call(String tag,String workspace, String push , String Dockerfile) {
+  writeFile file: "globalvalues.groovy", text: libraryResource("globalvalues.groovy")
+  def values = readProperties file: "globalvalues.groovy"
+  dockerRegistry = values['dockerRegistry']
     echo "building and pushing version: ${tag}"
   sh """
     cd ${workspace}
     echo building image ${tag}
-    ${SUDOVAR} docker build --build-arg REGISTRY_URL=v-nugetsrv3.inr.rd.hpicorp.net -t ${registry}/${tag} -f ${Dockerfile} .
+    ${SUDOVAR} docker build -t ${dockerRegistry}/${tag} -f ${Dockerfile} .
   """
   if ("${push}" == 'true'){
     echo "${push} comes to shove"
-    sh "${SUDOVAR} docker push ${registry}/${tag}"
+    sh " docker push ${dockerRegistry}/${tag}"
   }
 
 }
